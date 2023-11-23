@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 File Encoder</title>
+    <script>
+        function encodeFile() {
+            var fileInput = document.getElementById("fileInput");
+            var file = fileInput.files[0];
+            
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var encodedText = btoa(e.target.result);
+                    document.getElementById("outputText").value = decodeURIComponent(atob(encodedText));
+                    document.getElementById("Link").href = document.getElementById("outputText").value;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Please select a file.");
+            }
+        }
+
+        function CopyUrl() {
+            var textarea = document.createElement("textarea");
+            var selection = document.getSelection();
+            textarea.textContent = document.getElementById("outputText").value;
+            document.body.appendChild(textarea);
+            selection.removeAllRanges();
+            textarea.select();
+            document.execCommand("copy");
+            selection.removeAllRanges();
+            document.body.removeChild(textarea);
+        }
+    </script>
+</head>
+<body>
+    <h2>Base64 File Encoder</h2>
+    <label for="fileInput">Select a file:</label>
+    <input type="file" id="fileInput"><br>
+    <button onclick="encodeFile()">Encode</button><br>
+    <button onclick="CopyUrl()">Copy Url</button><br>
+    <textarea id="outputText" rows="4" cols="50" style="display: none;" readonly></textarea>
+    <a id="Link" href="about:blank">Encoded file link</a>
+</body>
+</html>
